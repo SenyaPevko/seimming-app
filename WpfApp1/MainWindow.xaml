@@ -1,0 +1,56 @@
+﻿<Window x:Class="WpfApp1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:WpfApp1.ViewModels"
+        Title="Проверка звания" Height="400" Width="300">
+    <Window.DataContext>
+        <vm:MainViewModel />
+    </Window.DataContext>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Поле выбора Соревнования -->
+        <TextBlock Text="Соревнование" Grid.Row="0" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
+        <ComboBox ItemsSource="{Binding Competitions}" SelectedItem="{Binding Athlete.Competition}" Grid.Row="0" Grid.Column="1" Margin="5"/>
+
+        <!-- Поле выбора Пола -->
+        <TextBlock Text="Пол" Grid.Row="1" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
+        <ComboBox ItemsSource="{Binding Genders}" SelectedItem="{Binding Athlete.Gender}" Grid.Row="1" Grid.Column="1" Margin="5"/>
+
+        <!-- Поле выбора Дисциплины -->
+        <TextBlock Text="Дисциплина" Grid.Row="2" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
+        <ComboBox ItemsSource="{Binding Disciplines}" SelectedItem="{Binding Athlete.Discipline}" Grid.Row="2" Grid.Column="1" Margin="5"/>
+
+        <!-- Поле ввода Возраста -->
+        <TextBlock Text="Возраст" Grid.Row="3" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
+        <TextBox Text="{Binding Athlete.Age, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="1" Margin="5"/>
+
+        <!-- Поле ввода Занятого места -->
+        <TextBlock Text="Занятое место" Grid.Row="4" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
+        <TextBox Text="{Binding Athlete.Place, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.Column="1" Margin="5"/>
+
+        <!-- Поле ввода Времени отставания -->
+        <TextBlock Text="Время отставания" Grid.Row="5" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
+        <TextBox Text="{Binding Athlete.TimeDifference, UpdateSourceTrigger=PropertyChanged}" Grid.Row="5" Grid.Column="1" Margin="5"/>
+
+        <!-- Кнопка Проверить звание -->
+        <Button Content="Проверить звание" Command="{Binding CheckRankCommand}" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Margin="5"/>
+
+        <!-- Результат -->
+        <TextBlock Text="{Binding Result}" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" TextAlignment="Center" FontWeight="Bold"/>
+    </Grid>
+</Window>
