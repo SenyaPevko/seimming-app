@@ -19,4 +19,28 @@ public static class RankChecker
 
         return "К сожалению, данный спортсмен не соответствует требованиям для получения звания КМС или МС.";
     }
+    
+    private static List<CompetitionRequirement> _requirements =
+    [
+        new()
+        {
+            Competition = "Чемпионат мира",
+            Discipline = "Открытая вода",
+            MsmkCriteria = new RankCriteria { MinPlace = 1, MaxPlace = 7 },
+            MsCriteria = null,
+            KmsCriteria = null
+        },
+
+        new()
+        {
+            Competition = "Чемпионат России",
+            Discipline = "Открытая вода 5 км",
+            MsmkCriteria = null,
+            MsCriteria = new RankCriteria { MinPlace = 1, MaxTimeDifferenceFromWinner = TimeSpan.FromMinutes(10) },
+            KmsCriteria = new RankCriteria
+                { MinPlace = 2, MaxPlace = 3, MaxTimeDifferenceFromWinner = TimeSpan.FromMinutes(10) }
+        }
+        // Добавить остальные требования по аналогии...
+
+    ];
 }
