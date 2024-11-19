@@ -9,11 +9,34 @@ public class MainViewModel : INotifyPropertyChanged
 {
     private Athlete _athlete;
     private string _result;
+    
+    private bool _isInputValid;
+    public bool IsInputValid
+    {
+        get => _isInputValid;
+        private set
+        {
+            _isInputValid = value;
+            OnPropertyChanged();
+            ((RelayCommand)CheckRankCommand).RaiseCanExecuteChanged();
+        }
+    }
+    
+    private void ValidateInput()
+    {
+        IsInputValid = Athlete is { Age: > 0, Place: > 0, TimeDifference: >= 0 }
+                       && !string.IsNullOrEmpty(Athlete.Competition)
+                       && !string.IsNullOrEmpty(Athlete.Discipline)
+                       && !string.IsNullOrEmpty(Athlete.Gender)
+                       && !string.IsNullOrEmpty(Athlete.WantedRank);
+    }
+
 
     public MainViewModel()
     {
         _athlete = new Athlete();
-        CheckRankCommand = new RelayCommand(CheckRank);
+        _athlete.PropertyChanged += (s, e) => ValidateInput();
+        CheckRankCommand = new RelayCommand(CheckRank, () => IsInputValid);
     }
 
     public Athlete Athlete
@@ -38,34 +61,17 @@ public class MainViewModel : INotifyPropertyChanged
 
     public ICommand CheckRankCommand { get; }
 
-    public List<string> Competitions { get; } =
-    [
-        "Олимпийские игры", 
-        "Чемпионат мира",
-        "Чемпионат Европы",
-        "Другие международные соревнования (ЕКП)",
-        "Чемпионат России",
-        "Кубок России",
-        "Первенство России",
-        "Другие всероссийские соревнования (ЕКП)"
+    public List<string> Competitions { get; } = Competition.All;
+    public List<string> Genders { get; } = Gender.All;
+    
+    public List<string> Ranks { get; } = Rank.All;
 
-    ];
-    public List<string> Genders { get; } = ["Мужской", "Женский"];
-
-    public List<string> Disciplines { get; } =
-    [
-        "Вольный стиль 50 м", "Вольный стиль 100 м", "Вольный стиль 200 м", "Вольный стиль 400 м",
-        "Вольный стиль 800 м", "Вольный стиль 1500 м", "На спине 50 м", "На спине 100 м", "На спине 200 м",
-        "Брасс 50 м", "Брасс 100 м", "Брасс 200 м", "Баттерфляй 50 м", "Баттерфляй 100 м", "Баттерфляй 200 м",
-        "Комплексное плавание 100 м", "Комплексное плавание 200 м", "Комплексное плавание 400 м",
-        "Эстафета 4x50 м - вольный стиль", "Эстафета 4x100 м - вольный стиль", "Эстафета 4x200 м - вольный стиль",
-        "Эстафета 4x50 м - комбинированная", "Эстафета 4x100 м - комбинированная", 
-        "Открытая вода 5 км", "Открытая вода 7,5 км", "Открытая вода 10 км", "Открытая вода 16 км", "Открытая вода 25 км и более"
-    ];
+    public List<string> Disciplines { get; } = Discipline.All;
     
     private void CheckRank()
     {
-        Result = RankChecker.CheckRank(_athlete);
+        var isRanked  = RankChecker.CheckRank(Athlete);
+        Result = isRanked ? "Отлично" : "Провал";
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
