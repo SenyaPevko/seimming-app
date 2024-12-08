@@ -1,128 +1,103 @@
 ﻿namespace WpfApp1.Models;
+
 public static class RankChecker
 {
     public static bool CheckRank(Athlete athlete)
     {
-        if (athlete.Age < 14 || string.IsNullOrEmpty(athlete.Competition) || string.IsNullOrEmpty(athlete.Gender) ||
+        if (string.IsNullOrEmpty(athlete.Competition) || string.IsNullOrEmpty(athlete.Gender) ||
             string.IsNullOrEmpty(athlete.Discipline) || string.IsNullOrEmpty(athlete.WantedRank))
         {
             return false; // Несоответствие минимальным требованиям
         }
 
-        switch (athlete.WantedRank)
+        return athlete.WantedRank switch
         {
-            case Rank.MSMK:
-                return CheckMSMK(athlete);
-            case Rank.MS:
-                return CheckMS(athlete);
-            case Rank.KMS:
-                return CheckKMS(athlete);
-            default:
-                return false;
-        }
+            Rank.MSMK => CheckMSMK(athlete),
+            Rank.MS => CheckMS(athlete),
+            Rank.KMS => CheckKMS(athlete),
+            _ => false
+        };
     }
 
     private static bool CheckMSMK(Athlete athlete)
     {
-        if (athlete.Age < 14) return false; // МСМК с 14 лет
+        if (athlete.Age < 14)
+            return false;
 
-        switch (athlete.Competition)
+        return athlete.Competition switch
         {
-            case Competition.OlympicGames:
-                return athlete.Place >= 1 && athlete.Place <= 8 && athlete.Discipline.Contains("Эстафета");
-            case Competition.WorldChampionships:
-                return athlete.Place >= 1 && athlete.Place <= 6 && athlete.Discipline.Contains("Открытая вода");
-            case Competition.EuropeanChampionships:
-                return athlete.Place >= 1 && athlete.Place <= 3 && athlete.Discipline.Contains("Эстафета");
-            case Competition.OtherInternationalCompetitionsECP:
-                return athlete.Place == 1 || (athlete.Place <= 3 && athlete.Competition.Contains("Кубок мира"));
-            default:
-                return false;
-        }
+            Competition.OlympicGames => 
+                athlete.Place is >= 1 and <= 8 && athlete.Discipline.IsRelay(),
+            Competition.WorldChampionships =>
+                (athlete.Place is >= 1 and <= 6 && athlete.Discipline.IsRelay()) ||
+                (athlete.Place is >= 1 and <= 7 && athlete.Discipline.IsOpenWater()),
+            Competition.EuropeanChampionships => 
+                (athlete.Place is >= 1 and <= 3 && athlete.Discipline.IsRelay()) ||
+                (athlete.Place is >= 1 and <= 6 && athlete.Discipline.IsOpenWater()),
+            Competition.OtherInternationalCompetitionsECP => 
+                (athlete.Place is >= 1 and <= 3 && (athlete.Discipline.IsRelay() || athlete.Discipline.IsOpenWater())) ||
+                // TODO: *Условие: если спортивное соревнование проводится по регламенту Кубка мира
+                (athlete.Place == 1 && (athlete.Discipline.IsRelay() || athlete.Discipline.IsOpenWater())),
+            _ => false
+        };
     }
-
+    
     private static bool CheckMS(Athlete athlete)
     {
-        if (athlete.Age < 12) return false; // МС с 12 лет
+        if (athlete.Age < 14)
+            return false;
 
-        switch (athlete.Competition)
+        return athlete.Competition switch
         {
-            case Competition.RussianChampionship:
-                if (athlete.Discipline.Contains("Открытая вода"))
-                {
-                    return athlete.Place <= 8 && CheckTimeDifference(athlete);
-                }
-                return athlete.Place == 1 && athlete.Discipline.Contains("Эстафета");
-            case Competition.RussianCup:
-                if (athlete.Discipline.Contains("Открытая вода"))
-                {
-                    return athlete.Place == 1 && CheckTimeDifference(athlete);
-                }
-                return athlete.Place == 1 && athlete.Discipline.Contains("Эстафета");
-            default:
-                return false;
-        }
+            Competition.RussianChampionship => 
+                athlete is { Discipline: Discipline.OpenWater5km, TimeDifference: <= 10, Place: >= 1 and <= 8 } ||
+                athlete is { Discipline: Discipline.OpenWater10km, TimeDifference: <= 20, Place: >= 1 and <= 8 } ||
+                athlete is { Discipline: Discipline.OpenWater16km, TimeDifference: <= 32, Place: >= 1 and <= 8 } ||
+                athlete is { Discipline: Discipline.OpenWater25kmAndMore, TimeDifference: <= 50, Place: >= 1 and <= 8 } ||
+                // TODO: **Условие: участие не менее 10 эстафетных команд
+                athlete is { Discipline: Discipline.OpenWaterRelay4x1250mMixed, Place: 1 },
+            Competition.RussianCup => 
+                athlete is { Discipline: Discipline.OpenWater5km, Place: 1 } ||
+                athlete is { Discipline: Discipline.OpenWater10km, Place: 1 } ||
+                athlete is { Discipline: Discipline.OpenWater16km, Place: 1 } ||
+                athlete is { Discipline: Discipline.OpenWater25kmAndMore, Place: 1 } ||
+                // TODO: **Условие: участие не менее 10 эстафетных команд
+                athlete is { Discipline: Discipline.OpenWaterRelay4x1250mMixed, Place: 1 },
+            Competition.RussianFirstChampionship => 
+                athlete is { Age: >= 18 and <= 19, Discipline: Discipline.OpenWater10km, Place: >= 1 and <= 6, TimeDifference: <= 20 } ||
+                // TODO: **Условие: участие не менее 10 эстафетных команд
+                athlete is { Age: >= 14 and <= 19, Discipline: Discipline.OpenWaterRelay4x1250mMixed, Place: 1 },
+            Competition.OtherAllRussianCompetitionsECP => 
+                athlete is { Discipline: Discipline.OpenWater5km, Place: 1 },
+            _ => false
+        };
     }
-
+    
     private static bool CheckKMS(Athlete athlete)
     {
-        if (athlete.Age < 10) return false; // КМС с 10 лет
+        if (athlete.Age < 14)
+            return false;
 
-        switch (athlete.Competition)
+        return athlete.Competition switch
         {
-            case Competition.RussianChampionship:
-                return athlete.Place <= 8 && CheckTimeDifference(athlete);
-            case Competition.RussianCup:
-                return athlete.Place <= 3 && CheckTimeDifference(athlete);
-            case Competition.RussianFirstChampionship:
-                return CheckRussianFirstChampionship(athlete);
-            case Competition.OtherAllRussianCompetitionsECP:
-                return athlete.Place <= 3 && CheckTimeDifference(athlete);
-            default:
-                return false;
-        }
-    }
-
-    private static bool CheckRussianFirstChampionship(Athlete athlete)
-    {
-        if (athlete.Gender == Gender.Male && athlete.Age >= 14 && athlete.Age <= 19)
-        {
-            if (athlete.Discipline.Contains("10 км") && athlete.Age >= 18 && athlete.Age <= 19)
-            {
-                return athlete.Place <= 10 && CheckTimeDifference(athlete, 20);
-            }
-            if (athlete.Discipline.Contains("7,5 км") && athlete.Age >= 16 && athlete.Age <= 17)
-            {
-                return athlete.Place <= 8 && CheckTimeDifference(athlete, 15);
-            }
-            if (athlete.Discipline.Contains("5 км") && athlete.Age >= 14 && athlete.Age <= 15)
-            {
-                return athlete.Place <= 6 && CheckTimeDifference(athlete, 10);
-            }
-        }
-        return false;
-    }
-
-    private static bool CheckTimeDifference(Athlete athlete, int maxDifference = 50)
-    {
-        var distance = GetDistanceFromDiscipline(athlete.Discipline);
-        switch (distance)
-        {
-            case 5: return athlete.Time <= athlete.Time - 10;
-            case 10: return athlete.Time <= athlete.Time - 20;
-            case 16: return athlete.Time <= athlete.Time - 32;
-            case 25: return athlete.Time <= athlete.Time - maxDifference;
-            default: return false;
-        }
-    }
-
-    private static int GetDistanceFromDiscipline(string discipline)
-    {
-        if (discipline.Contains("5 км")) return 5;
-        if (discipline.Contains("10 км")) return 10;
-        if (discipline.Contains("16 км")) return 16;
-        if (discipline.Contains("25 км")) return 25;
-        return 0;
+            Competition.RussianCup => 
+                athlete is { Discipline: Discipline.OpenWater5km, TimeDifference: <= 10, Place: >= 2 and <= 3 } ||
+                athlete is { Discipline: Discipline.OpenWater10km, TimeDifference: <= 20, Place: >= 1 and <= 6 } ||
+                athlete is { Discipline: Discipline.OpenWater16km, TimeDifference: <= 32, Place: >= 1 and <= 6 } ||
+                athlete is { Discipline: Discipline.OpenWater25kmAndMore, TimeDifference: <= 50, Place: >= 1 and <= 6 } ||
+                // TODO: **Условие: участие не менее 10 эстафетных команд
+                athlete is { Discipline: Discipline.OpenWaterRelay4x1250mMixed, Place: >= 1 and <= 6 },
+            Competition.RussianFirstChampionship => 
+                athlete is { Age: >= 18 and <= 19, Discipline: Discipline.OpenWater10km, Place: >= 7 and <= 10, TimeDifference: <= 20 } ||
+                athlete is { Age: >= 16 and <= 17, Discipline: Discipline.OpenWater7_5km, Place: >= 1 and <= 8, TimeDifference: <= 15 } ||
+                athlete is { Age: >= 14 and <= 15, Discipline: Discipline.OpenWater5km, Place: >= 1 and <= 6, TimeDifference: <= 10 } ||
+                // TODO: **Условие: участие не менее 10 эстафетных команд
+                athlete is { Age: >= 14 and <= 19, Discipline: Discipline.OpenWaterRelay4x1250mMixed, Place: >= 2 and <= 3 } ||
+                // TODO: **Условие: участие не менее 10 эстафетных команд
+                athlete is { Age: >= 14 and <= 16, Discipline: Discipline.OpenWaterRelay4x1250mMixed, Place: >= 1 and <= 3 },
+            Competition.OtherAllRussianCompetitionsECP => 
+                athlete is { Discipline: Discipline.OpenWater5km, Place: >= 2 and <= 3, TimeDifference: <= 10 },
+            _ => false
+        };
     }
 }
-
