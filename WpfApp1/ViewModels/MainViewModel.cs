@@ -73,7 +73,7 @@ public class MainViewModel : INotifyPropertyChanged
     private void CheckRank()
     {
         var isRanked = RankChecker.CheckRank(Athlete);
-        Result = isRanked ? "Отлично" : "Провал";
+        Result = isRanked ? "Отлично, ваше звание подтвердилось" : "Ваши данные не соответствуют званию";
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
