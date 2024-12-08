@@ -50,10 +50,10 @@ public static class RankChecker
         return athlete.Competition switch
         {
             Competition.RussianChampionship => 
-                athlete is { Discipline: Discipline.OpenWater5km, TimeDifference: <= 10, Place: >= 1 and <= 8 } ||
-                athlete is { Discipline: Discipline.OpenWater10km, TimeDifference: <= 20, Place: >= 1 and <= 8 } ||
-                athlete is { Discipline: Discipline.OpenWater16km, TimeDifference: <= 32, Place: >= 1 and <= 8 } ||
-                athlete is { Discipline: Discipline.OpenWater25kmAndMore, TimeDifference: <= 50, Place: >= 1 and <= 8 } ||
+                athlete is { Discipline: Discipline.OpenWater5km, TimeDifference.TotalMinutes: <= 10, Place: >= 1 and <= 8 } ||
+                athlete is { Discipline: Discipline.OpenWater10km, TimeDifference.TotalMinutes: <= 20, Place: >= 1 and <= 8 } ||
+                athlete is { Discipline: Discipline.OpenWater16km, TimeDifference.TotalMinutes: <= 32, Place: >= 1 and <= 8 } ||
+                athlete is { Discipline: Discipline.OpenWater25kmAndMore, TimeDifference.TotalMinutes: <= 50, Place: >= 1 and <= 8 } ||
                 // TODO: **Условие: участие не менее 10 эстафетных команд
                 athlete is { Discipline: Discipline.OpenWaterRelay4x1250mMixed, Place: 1 },
             Competition.RussianCup => 
@@ -64,7 +64,7 @@ public static class RankChecker
                 // TODO: **Условие: участие не менее 10 эстафетных команд
                 athlete is { Discipline: Discipline.OpenWaterRelay4x1250mMixed, Place: 1 },
             Competition.RussianFirstChampionship => 
-                athlete is { Age: >= 18 and <= 19, Discipline: Discipline.OpenWater10km, Place: >= 1 and <= 6, TimeDifference: <= 20 } ||
+                athlete is { Age: >= 18 and <= 19, Discipline: Discipline.OpenWater10km, Place: >= 1 and <= 6, TimeDifference.TotalMinutes: <= 20 } ||
                 // TODO: **Условие: участие не менее 10 эстафетных команд
                 athlete is { Age: >= 14 and <= 19, Discipline: Discipline.OpenWaterRelay4x1250mMixed, Place: 1 },
             Competition.OtherAllRussianCompetitionsECP => 
@@ -81,22 +81,22 @@ public static class RankChecker
         return athlete.Competition switch
         {
             Competition.RussianCup => 
-                athlete is { Discipline: Discipline.OpenWater5km, TimeDifference: <= 10, Place: >= 2 and <= 3 } ||
-                athlete is { Discipline: Discipline.OpenWater10km, TimeDifference: <= 20, Place: >= 1 and <= 6 } ||
-                athlete is { Discipline: Discipline.OpenWater16km, TimeDifference: <= 32, Place: >= 1 and <= 6 } ||
-                athlete is { Discipline: Discipline.OpenWater25kmAndMore, TimeDifference: <= 50, Place: >= 1 and <= 6 } ||
+                athlete is { Discipline: Discipline.OpenWater5km, TimeDifference.TotalMinutes: <= 10, Place: >= 2 and <= 3 } ||
+                athlete is { Discipline: Discipline.OpenWater10km, TimeDifference.TotalMinutes: <= 20, Place: >= 1 and <= 6 } ||
+                athlete is { Discipline: Discipline.OpenWater16km, TimeDifference.TotalMinutes: <= 32, Place: >= 1 and <= 6 } ||
+                athlete is { Discipline: Discipline.OpenWater25kmAndMore, TimeDifference.TotalMinutes: <= 50, Place: >= 1 and <= 6 } ||
                 // TODO: **Условие: участие не менее 10 эстафетных команд
                 athlete is { Discipline: Discipline.OpenWaterRelay4x1250mMixed, Place: >= 1 and <= 6 },
             Competition.RussianFirstChampionship => 
-                athlete is { Age: >= 18 and <= 19, Discipline: Discipline.OpenWater10km, Place: >= 7 and <= 10, TimeDifference: <= 20 } ||
-                athlete is { Age: >= 16 and <= 17, Discipline: Discipline.OpenWater7_5km, Place: >= 1 and <= 8, TimeDifference: <= 15 } ||
-                athlete is { Age: >= 14 and <= 15, Discipline: Discipline.OpenWater5km, Place: >= 1 and <= 6, TimeDifference: <= 10 } ||
+                athlete is { Age: >= 18 and <= 19, Discipline: Discipline.OpenWater10km, Place: >= 7 and <= 10, TimeDifference.TotalMinutes: <= 20 } ||
+                athlete is { Age: >= 16 and <= 17, Discipline: Discipline.OpenWater7_5km, Place: >= 1 and <= 8, TimeDifference.TotalMinutes: <= 15 } ||
+                athlete is { Age: >= 14 and <= 15, Discipline: Discipline.OpenWater5km, Place: >= 1 and <= 6, TimeDifference.TotalMinutes: <= 10 } ||
                 // TODO: **Условие: участие не менее 10 эстафетных команд
                 athlete is { Age: >= 14 and <= 19, Discipline: Discipline.OpenWaterRelay4x1250mMixed, Place: >= 2 and <= 3 } ||
                 // TODO: **Условие: участие не менее 10 эстафетных команд
                 athlete is { Age: >= 14 and <= 16, Discipline: Discipline.OpenWaterRelay4x1250mMixed, Place: >= 1 and <= 3 },
             Competition.OtherAllRussianCompetitionsECP => 
-                athlete is { Discipline: Discipline.OpenWater5km, Place: >= 2 and <= 3, TimeDifference: <= 10 },
+                athlete is { Discipline: Discipline.OpenWater5km, Place: >= 2 and <= 3, TimeDifference.TotalMinutes: <= 10 },
             _ => false
         };
     }
