@@ -9,8 +9,9 @@ public class MainViewModel : INotifyPropertyChanged
 {
     private Athlete _athlete;
     private string _result;
-    
+
     private bool _isInputValid;
+
     public bool IsInputValid
     {
         get => _isInputValid;
@@ -21,14 +22,15 @@ public class MainViewModel : INotifyPropertyChanged
             ((RelayCommand)CheckRankCommand).RaiseCanExecuteChanged();
         }
     }
-    
+
     private void ValidateInput()
     {
-        IsInputValid = Athlete is { Age: > 0, Place: > 0, TimeDifference: >= 0 }
-                       && !string.IsNullOrEmpty(Athlete.Competition)
-                       && !string.IsNullOrEmpty(Athlete.Discipline)
-                       && !string.IsNullOrEmpty(Athlete.Gender)
-                       && !string.IsNullOrEmpty(Athlete.WantedRank);
+        IsInputValid =
+            Athlete is { Age: > 0, Place: > 0 } && (Athlete.TimeDifference >= 0 || Athlete.DistanceDifference >= 0)
+                                                && !string.IsNullOrEmpty(Athlete.Competition)
+                                                && !string.IsNullOrEmpty(Athlete.Discipline)
+                                                && !string.IsNullOrEmpty(Athlete.Gender)
+                                                && !string.IsNullOrEmpty(Athlete.WantedRank);
     }
 
 
@@ -63,14 +65,14 @@ public class MainViewModel : INotifyPropertyChanged
 
     public List<string> Competitions { get; } = Competition.All;
     public List<string> Genders { get; } = Gender.All;
-    
+
     public List<string> Ranks { get; } = Rank.All;
 
     public List<string> Disciplines { get; } = Discipline.All;
-    
+
     private void CheckRank()
     {
-        var isRanked  = RankChecker.CheckRank(Athlete);
+        var isRanked = RankChecker.CheckRank(Athlete);
         Result = isRanked ? "Отлично" : "Провал";
     }
 
