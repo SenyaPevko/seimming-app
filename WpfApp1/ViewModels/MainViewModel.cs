@@ -27,7 +27,6 @@ public class MainViewModel : INotifyPropertyChanged
     {
         IsInputValid =
             Athlete is { Age: > 0, Place: > 0 }
-            && !string.IsNullOrEmpty(Athlete.Competition)
             && !string.IsNullOrEmpty(Athlete.Discipline)
             && !string.IsNullOrEmpty(Athlete.Gender)
             && !string.IsNullOrEmpty(Athlete.WantedRank);
