@@ -1,8 +1,7 @@
-﻿namespace WpfApp1.Models;
-
-using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows.Data;
+
+namespace WpfApp1.Models;
 
 public class TimeSpanConverter : IValueConverter
 {
@@ -10,7 +9,7 @@ public class TimeSpanConverter : IValueConverter
     {
         if (value is TimeSpan timeSpan)
         {
-            return $"{(int)timeSpan.TotalHours} ч {timeSpan.Minutes} мин {timeSpan.Seconds} сек";
+            return $"{timeSpan.Minutes} мин {timeSpan.Seconds} сек {timeSpan.Milliseconds} мс";
         }
 
         return string.Empty;
@@ -24,9 +23,9 @@ public class TimeSpanConverter : IValueConverter
 
         try
         {
-            int hours = 0, minutes = 0, seconds = 0;
+            int minutes = 0, seconds = 0, milliseconds = 0;
 
-            var parts = input.Split([" ", "ч", "мин", "сек"], StringSplitOptions.RemoveEmptyEntries);
+            var parts = input.Split([" ", "мин", "сек", "мс"], StringSplitOptions.RemoveEmptyEntries);
             for (var i = 0; i < parts.Length; i++)
             {
                 if (int.TryParse(parts[i], out var number))
@@ -34,19 +33,19 @@ public class TimeSpanConverter : IValueConverter
                     switch (i)
                     {
                         case 0:
-                            hours = number;
-                            break;
-                        case 1:
                             minutes = number;
                             break;
-                        case 2:
+                        case 1:
                             seconds = number;
+                            break;
+                        case 2:
+                            milliseconds = number;
                             break;
                     }
                 }
             }
 
-            return new TimeSpan(hours, minutes, seconds);
+            return new TimeSpan(0, 0 ,minutes, seconds, milliseconds);
         }
         catch
         {
