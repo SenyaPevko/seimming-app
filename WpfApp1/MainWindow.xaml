@@ -18,7 +18,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -54,19 +53,16 @@
         <TextBlock Text="Время отставания" Grid.Row="6" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
         <TextBox Text="{Binding Athlete.TimeDifference, UpdateSourceTrigger=PropertyChanged}" Grid.Row="6" Grid.Column="1" Margin="5"/>
 
-        <!-- Поле ввода Времени отставания -->
-        <TextBlock Text="Дистанция отставания" Grid.Row="7" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
-        <TextBox Text="{Binding Athlete.DistanceDifference, UpdateSourceTrigger=PropertyChanged}" Grid.Row="7" Grid.Column="1" Margin="5"/>
         
         <!-- Поле выбора разряда -->
-        <TextBlock Text="Разряд" Grid.Row="8" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
-        <ComboBox ItemsSource="{Binding Ranks}" SelectedItem="{Binding Athlete.WantedRank}" Grid.Row="8" Grid.Column="1" Margin="5"/>
+        <TextBlock Text="Разряд" Grid.Row="7" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
+        <ComboBox ItemsSource="{Binding Ranks}" SelectedItem="{Binding Athlete.WantedRank}" Grid.Row="7" Grid.Column="1" Margin="5"/>
 
         
         <!-- Кнопка Проверить звание -->
-        <Button Content="Проверить звание" Command="{Binding CheckRankCommand}" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Margin="5"/>
+        <Button Content="Проверить звание" Command="{Binding CheckRankCommand}" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Margin="5"/>
 
         <!-- Результат -->
-        <TextBlock Text="{Binding Result}" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" IsEnabled="{Binding IsInputValid}" TextAlignment="Center" FontWeight="Bold"/>
+        <TextBlock Text="{Binding Result}" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" IsEnabled="{Binding IsInputValid}" TextAlignment="Center" FontWeight="Bold"/>
     </Grid>
 </Window>

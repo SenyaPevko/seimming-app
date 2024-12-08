@@ -16,8 +16,6 @@ public class Athlete : INotifyPropertyChanged
     private int _place;
     // Время отставания от победителя
     private double _timeDifference;
-    // Расстояние отставания от победителя
-    private double _distanceDifference;
     // Время на дистанции
     private double _time;
     // Желаемое звание: МСМК, МС, КМС
@@ -79,16 +77,6 @@ public class Athlete : INotifyPropertyChanged
         set
         {
             _timeDifference = value;
-            OnPropertyChanged();
-        }
-    }
-    
-    public double DistanceDifference
-    {
-        get => _distanceDifference;
-        set
-        {
-            _distanceDifference = value;
             OnPropertyChanged();
         }
     }
