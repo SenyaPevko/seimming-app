@@ -3,30 +3,55 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:WpfApp1.ViewModels"
         xmlns:models="clr-namespace:WpfApp1.Models"
-        Title="Проверка звания" Height="450" Width="350"
+        Title="Проверка звания" Height="500" Width="400"
         Background="#F3F4F6" WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <vm:MainViewModel />
     </Window.DataContext>
 
+    <!-- Ресурсы и стили -->
     <Window.Resources>
-        <models:TimeSpanConverter x:Key="TimeSpanConverter" />
+        <!-- Конвертер для проверки "Открытой воды" -->
+        <models:OpenWaterChecker x:Key="OpenWaterChecker" />
 
-        <!-- Современный стиль для текстовых полей -->
+        <!-- Стили -->
         <Style TargetType="TextBox">
-            <Setter Property="Margin" Value="5" />
-            <Setter Property="Padding" Value="10,5" />
-            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Margin" Value="10,5" />
+            <Setter Property="Padding" Value="12,8" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
             <Setter Property="Background" Value="White" />
-            <Setter Property="BorderBrush" Value="#D1D5DB" />
-            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="#CBD5E1" />
+            <Setter Property="BorderThickness" Value="2" />
             <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="1" BlurRadius="4" Color="#888888" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="10,5" />
+            <Setter Property="Padding" Value="12,8" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush" Value="#CBD5E1" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="1" BlurRadius="4" Color="#888888" />
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <Style TargetType="Button">
             <Setter Property="Margin" Value="10" />
-            <Setter Property="Padding" Value="10,5" />
-            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Padding" Value="12,8" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
             <Setter Property="Foreground" Value="White" />
             <Setter Property="Background" Value="#3B82F6" />
             <Setter Property="BorderThickness" Value="0" />
@@ -35,7 +60,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}"
-                                CornerRadius="5"
+                                CornerRadius="10"
                                 Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center"
                                               VerticalAlignment="Center" />
@@ -43,32 +68,34 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="2" BlurRadius="5" Color="#5C9CF2" />
+                </Setter.Value>
+            </Setter>
         </Style>
 
-
-        <!-- Современный стиль для ComboBox -->
-        <Style TargetType="ComboBox">
-            <Setter Property="Margin" Value="5" />
-            <Setter Property="Padding" Value="10,5" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="Background" Value="White" />
-            <Setter Property="BorderBrush" Value="#D1D5DB" />
-            <Setter Property="BorderThickness" Value="1" />
-        </Style>
-
-        <!-- Стиль для TextBlock -->
         <Style TargetType="TextBlock">
-            <Setter Property="Margin" Value="5" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="10,5" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
             <Setter Property="Foreground" Value="#374151" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="ResultTextStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="Foreground" Value="#3B82F6" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="TextAlignment" Value="Center" />
+            <Setter Property="Margin" Value="10" />
         </Style>
     </Window.Resources>
 
+    <!-- Основная разметка -->
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -82,38 +109,50 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <!-- Поле выбора Соревнования -->
-        <TextBlock Text="Соревнование" Grid.Row="0" Grid.Column="0" />
-        <ComboBox ItemsSource="{Binding Competitions}" SelectedItem="{Binding Athlete.Competition}" Grid.Row="0" Grid.Column="1" />
+        <!-- Поле выбора дисциплины -->
+        <TextBlock Text="Дисциплина" Grid.Row="0" Grid.Column="0" />
+        <ComboBox ItemsSource="{Binding Disciplines}" 
+                  SelectedItem="{Binding Athlete.Discipline}" 
+                  Grid.Row="0" Grid.Column="1" />
 
-        <!-- Поле выбора Пола -->
-        <TextBlock Text="Пол" Grid.Row="1" Grid.Column="0" />
-        <ComboBox ItemsSource="{Binding Genders}" SelectedItem="{Binding Athlete.Gender}" Grid.Row="1" Grid.Column="1" />
+        <!-- Поле ввода возраста -->
+        <TextBlock Text="Возраст" Grid.Row="1" Grid.Column="0" />
+        <TextBox Text="{Binding Athlete.Age, UpdateSourceTrigger=PropertyChanged}" 
+                 Grid.Row="1" Grid.Column="1" />
 
-        <!-- Поле выбора Дисциплины -->
-        <TextBlock Text="Дисциплина" Grid.Row="2" Grid.Column="0" />
-        <ComboBox ItemsSource="{Binding Disciplines}" SelectedItem="{Binding Athlete.Discipline}" Grid.Row="2" Grid.Column="1" />
+        <!-- Поле ввода занятого места -->
+        <TextBlock Text="Занятое место" Grid.Row="2" Grid.Column="0" />
+        <TextBox Text="{Binding Athlete.Place, UpdateSourceTrigger=PropertyChanged}" 
+                 Grid.Row="2" Grid.Column="1" />
 
-        <!-- Поле ввода Возраста -->
-        <TextBlock Text="Возраст" Grid.Row="3" Grid.Column="0" />
-        <TextBox Text="{Binding Athlete.Age, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="1" />
+        <!-- Поле ввода времени отставания -->
+        <TextBlock Text="Время отставания" Grid.Row="3" Grid.Column="0" />
+        <TextBox Text="{Binding Athlete.TimeDifference, Converter={StaticResource TimeSpanConverter}, UpdateSourceTrigger=PropertyChanged}" 
+                 Grid.Row="3" Grid.Column="1">
+            <TextBox.Style>
+                <Style TargetType="TextBox">
+                    <Setter Property="IsEnabled" Value="True" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Athlete.Discipline, Converter={StaticResource OpenWaterChecker}}" Value="False">
+                            <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
 
-        <!-- Поле ввода Занятого места -->
-        <TextBlock Text="Занятое место" Grid.Row="4" Grid.Column="0" />
-        <TextBox Text="{Binding Athlete.Place, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.Column="1" />
-
-        <!-- Поле ввода Времени на дистанции -->
-        <TextBlock Text="Время на дистанции" Grid.Row="5" Grid.Column="0" />
-        <TextBox Text="{Binding Athlete.Time, Converter={StaticResource TimeSpanConverter}, UpdateSourceTrigger=PropertyChanged}" Grid.Row="5" Grid.Column="1" />
-
-        <!-- Поле ввода Времени отставания -->
-        <TextBlock Text="Время отставания" Grid.Row="6" Grid.Column="0" />
-        <TextBox Text="{Binding Athlete.TimeDifference, Converter={StaticResource TimeSpanConverter}, UpdateSourceTrigger=PropertyChanged}" Grid.Row="6" Grid.Column="1" />
+        <!-- Поле ввода времени на дистанции -->
+        <TextBlock Text="Время на дистанции" Grid.Row="4" Grid.Column="0" />
+        <TextBox Text="{Binding Athlete.Time, Converter={StaticResource TimeSpanConverter}, UpdateSourceTrigger=PropertyChanged}" 
+                 Grid.Row="4" Grid.Column="1" />
 
         <!-- Кнопка Проверить звание -->
-        <Button Content="Проверить звание" Command="{Binding CheckRankCommand}" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" />
+        <Button Content="Проверить звание" 
+                Command="{Binding CheckRankCommand}" 
+                Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" />
 
         <!-- Результат -->
-        <TextBlock Text="{Binding Result}" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" TextAlignment="Center" FontWeight="Bold" FontSize="16" Foreground="#3B82F6" />
+        <TextBlock Text="{Binding Result}" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" 
+                   Style="{StaticResource ResultTextStyle}" />
     </Grid>
 </Window>
