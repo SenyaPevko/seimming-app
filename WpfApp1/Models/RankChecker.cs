@@ -4,7 +4,7 @@ public static class RankChecker
 {
     public static string? CheckRank(Athlete athlete)
     {
-        if (string.IsNullOrEmpty(athlete.Competition)  || string.IsNullOrEmpty(athlete.Gender) ||
+        if (string.IsNullOrEmpty(athlete.Competition) || string.IsNullOrEmpty(athlete.Gender) ||
             string.IsNullOrEmpty(athlete.Discipline))
         {
             return null; // Несоответствие минимальным требованиям
@@ -12,11 +12,11 @@ public static class RankChecker
 
         if (CheckMSMK(athlete) || CheckMSMKWithoutCompetition(athlete))
             return Rank.MSMK;
-        if(CheckMS(athlete) || CheckMSWithoutCompetition(athlete))
+        if (CheckMS(athlete) || CheckMSWithoutCompetition(athlete))
             return Rank.MS;
-        if(CheckKMS(athlete) || CheckKMSWithoutCompetition(athlete))
+        if (CheckKMS(athlete) || CheckKMSWithoutCompetition(athlete))
             return Rank.KMS;
-        
+
         return null;
     }
 
@@ -96,6 +96,8 @@ public static class RankChecker
     {
         if (athlete.Age < 14)
             return false;
+        if (athlete.Competition == Competition.OtherMS)
+            return false;
 
         return athlete.Competition switch
         {
@@ -157,6 +159,9 @@ public static class RankChecker
     private static bool CheckMSMKWithoutCompetition(Athlete athlete)
     {
         if (athlete.Age < 14)
+            return false;
+
+        if (athlete.Competition is Competition.OtherMS or Competition.OtherKMS1)
             return false;
 
         return athlete.Discipline switch
@@ -300,6 +305,10 @@ public static class RankChecker
     private static bool CheckMSWithoutCompetition(Athlete athlete)
     {
         if (athlete.Age < 12)
+            return false;
+        if (athlete is { Competition: Competition.OtherMS, Age: < 16 or > 18 })
+            return false;
+        if (athlete.Competition == Competition.OtherKMS1)
             return false;
 
         return athlete.Discipline switch

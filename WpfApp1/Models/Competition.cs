@@ -11,6 +11,9 @@ public class Competition
     public const string RussianFirstChampionship = "Первенство России";
     public const string OtherAllRussianCompetitionsECP = "Другие всероссийские соревнования (ЕКП)";
     
+    public const string OtherMS = "Соревнования со статусом не ниже статуса первенства федерального округа, двух и более федеральных округов, первенств г. Москвы и г. Санкт-Петербурга";
+    public const string OtherKMS1 = "Соревнования со статусом не ниже статуса других официальных спортивных соревнований субъекта Российской Федерации (за исключением официальных физкультурных мероприятий субъекта Российской Федерации)";
+    
     public static List<string> All =
     [
         OlympicGames,
@@ -20,6 +23,8 @@ public class Competition
         RussianChampionship,
         RussianCup,
         RussianFirstChampionship,
-        OtherAllRussianCompetitionsECP
+        OtherAllRussianCompetitionsECP,
+        OtherMS,
+        OtherKMS1
     ];
 }
