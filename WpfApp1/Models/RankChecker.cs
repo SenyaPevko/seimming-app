@@ -2,21 +2,22 @@
 
 public static class RankChecker
 {
-    public static bool CheckRank(Athlete athlete)
+    public static string? CheckRank(Athlete athlete)
     {
-        if (string.IsNullOrEmpty(athlete.Competition) || string.IsNullOrEmpty(athlete.Gender) ||
-            string.IsNullOrEmpty(athlete.Discipline) || string.IsNullOrEmpty(athlete.WantedRank))
+        if (string.IsNullOrEmpty(athlete.Competition)  || string.IsNullOrEmpty(athlete.Gender) ||
+            string.IsNullOrEmpty(athlete.Discipline))
         {
-            return false; // Несоответствие минимальным требованиям
+            return null; // Несоответствие минимальным требованиям
         }
 
-        return athlete.WantedRank switch
-        {
-            Rank.MSMK => CheckMSMK(athlete) || CheckMSMKWithoutCompetition(athlete),
-            Rank.MS => CheckMS(athlete) || CheckMSWithoutCompetition(athlete),
-            Rank.KMS => CheckKMS(athlete) || CheckKMSWithoutCompetition(athlete),
-            _ => false
-        };
+        if (CheckMSMK(athlete) || CheckMSMKWithoutCompetition(athlete))
+            return Rank.MSMK;
+        if(CheckMS(athlete) || CheckMSWithoutCompetition(athlete))
+            return Rank.MS;
+        if(CheckKMS(athlete) || CheckKMSWithoutCompetition(athlete))
+            return Rank.KMS;
+        
+        return null;
     }
 
     private static bool CheckMSMK(Athlete athlete)

@@ -18,8 +18,6 @@ public class Athlete : INotifyPropertyChanged
     private TimeSpan _timeDifference;
     // Время на дистанции
     private TimeSpan _time;
-    // Желаемое звание: МСМК, МС, КМС
-    private string _wantedRank;
 
     public string Competition
     {
@@ -87,16 +85,6 @@ public class Athlete : INotifyPropertyChanged
         set
         {
             _time = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public string WantedRank
-    {
-        get => _wantedRank;
-        set
-        {
-            _wantedRank = value;
             OnPropertyChanged();
         }
     }

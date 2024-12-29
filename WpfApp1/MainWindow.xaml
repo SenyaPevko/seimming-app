@@ -75,7 +75,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -111,14 +110,10 @@
         <TextBlock Text="Время отставания" Grid.Row="6" Grid.Column="0" />
         <TextBox Text="{Binding Athlete.TimeDifference, Converter={StaticResource TimeSpanConverter}, UpdateSourceTrigger=PropertyChanged}" Grid.Row="6" Grid.Column="1" />
 
-        <!-- Поле выбора разряда -->
-        <TextBlock Text="Разряд" Grid.Row="7" Grid.Column="0" />
-        <ComboBox ItemsSource="{Binding Ranks}" SelectedItem="{Binding Athlete.WantedRank}" Grid.Row="7" Grid.Column="1" />
-
         <!-- Кнопка Проверить звание -->
-        <Button Content="Проверить звание" Command="{Binding CheckRankCommand}" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" />
+        <Button Content="Проверить звание" Command="{Binding CheckRankCommand}" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" />
 
         <!-- Результат -->
-        <TextBlock Text="{Binding Result}" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" TextAlignment="Center" FontWeight="Bold" FontSize="16" Foreground="#3B82F6" />
+        <TextBlock Text="{Binding Result}" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" TextAlignment="Center" FontWeight="Bold" FontSize="16" Foreground="#3B82F6" />
     </Grid>
 </Window>

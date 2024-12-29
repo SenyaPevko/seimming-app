@@ -28,8 +28,7 @@ public class MainViewModel : INotifyPropertyChanged
         IsInputValid =
             Athlete is { Age: > 0, Place: > 0 }
             && !string.IsNullOrEmpty(Athlete.Discipline)
-            && !string.IsNullOrEmpty(Athlete.Gender)
-            && !string.IsNullOrEmpty(Athlete.WantedRank);
+            && !string.IsNullOrEmpty(Athlete.Gender);
     }
 
 
@@ -65,14 +64,12 @@ public class MainViewModel : INotifyPropertyChanged
     public List<string> Competitions { get; } = Competition.All;
     public List<string> Genders { get; } = Gender.All;
 
-    public List<string> Ranks { get; } = Rank.All;
-
     public List<string> Disciplines { get; } = Discipline.All;
 
     private void CheckRank()
     {
-        var isRanked = RankChecker.CheckRank(Athlete);
-        Result = isRanked ? "Отлично, ваше звание подтвердилось" : "Ваши данные не соответствуют званию";
+        var rank = RankChecker.CheckRank(Athlete);
+        Result = rank is not null ? $"Отлично, ваше звание {rank}" : "Ваши данные не соответствуют званию";
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
