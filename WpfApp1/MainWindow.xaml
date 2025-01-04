@@ -4,116 +4,116 @@
         xmlns:vm="clr-namespace:WpfApp1.ViewModels"
         xmlns:models="clr-namespace:WpfApp1.Models"
         Title="Проверка звания" Height="450" Width="350"
-        Background="#F3F4F6" WindowStartupLocation="CenterScreen">
-    <Window.DataContext>
-        <vm:MainViewModel />
-    </Window.DataContext>
+        Background="#C5D9FE" WindowStartupLocation="CenterScreen">
+	<Window.DataContext>
+		<vm:MainViewModel />
+	</Window.DataContext>
 
-    <Window.Resources>
-        <models:TimeSpanConverter x:Key="TimeSpanConverter" />
+	<Window.Resources>
+		<models:TimeSpanConverter x:Key="TimeSpanConverter" />
 
-        <!-- Современный стиль для текстовых полей -->
-        <Style TargetType="TextBox">
-            <Setter Property="Margin" Value="5" />
-            <Setter Property="Padding" Value="10,5" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="Background" Value="White" />
-            <Setter Property="BorderBrush" Value="#D1D5DB" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
+		<!-- Стиль для TextBox -->
+		<Style TargetType="TextBox">
+			<Setter Property="Margin" Value="5" />
+			<Setter Property="Padding" Value="10,5" />
+			<Setter Property="FontSize" Value="14" />
+			<Setter Property="Background" Value="White" />
+			<Setter Property="BorderBrush" Value="#00B0E0" />
+			<Setter Property="BorderThickness" Value="3" />
+			<Setter Property="VerticalAlignment" Value="Center" />
+		</Style>
 
-        <Style TargetType="Button">
-            <Setter Property="Margin" Value="10" />
-            <Setter Property="Padding" Value="10,5" />
-            <Setter Property="FontSize" Value="16" />
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="Background" Value="#3B82F6" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                CornerRadius="5"
+		<!-- Стиль для Button -->
+		<Style TargetType="Button">
+			<Setter Property="Margin" Value="10" />
+			<Setter Property="Padding" Value="10,5" />
+			<Setter Property="FontSize" Value="16" />
+			<Setter Property="Foreground" Value="White" />
+			<Setter Property="Background" Value="#014AC2" />
+			<Setter Property="BorderThickness" Value="0" />
+			<Setter Property="HorizontalAlignment" Value="Center" />
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="Button">
+						<Border Background="{TemplateBinding Background}"
                                 Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center"
+							<ContentPresenter HorizontalAlignment="Center"
                                               VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+						</Border>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
 
+		<!-- Стиль для ComboBox -->
+		<Style TargetType="ComboBox">
+			<Setter Property="Margin" Value="5" />
+			<Setter Property="Padding" Value="10,5" />
+			<Setter Property="FontSize" Value="14" />
+			<Setter Property="Background" Value="White" />
+			<Setter Property="BorderBrush" Value="#00B0E0" />
+			<Setter Property="BorderThickness" Value="3" />
+		</Style>
 
-        <!-- Современный стиль для ComboBox -->
-        <Style TargetType="ComboBox">
-            <Setter Property="Margin" Value="5" />
-            <Setter Property="Padding" Value="10,5" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="Background" Value="White" />
-            <Setter Property="BorderBrush" Value="#D1D5DB" />
-            <Setter Property="BorderThickness" Value="1" />
-        </Style>
+		<!-- Стиль для TextBlock -->
+		<Style TargetType="TextBlock">
+			<Setter Property="Margin" Value="5" />
+			<Setter Property="FontSize" Value="14" />
+			<Setter Property="FontWeight" Value="600" />
+			<Setter Property="VerticalAlignment" Value="Center" />
+			<Setter Property="Foreground" Value="#00B0E0" />
+		</Style>
+	</Window.Resources>
 
-        <!-- Стиль для TextBlock -->
-        <Style TargetType="TextBlock">
-            <Setter Property="Margin" Value="5" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Foreground" Value="#374151" />
-        </Style>
-    </Window.Resources>
+	<Grid Margin="10">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
 
-    <Grid Margin="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+		<!-- Поле выбора Соревнования -->
+		<TextBlock Text="Соревнование" Grid.Row="0" Grid.Column="0" />
+		<ComboBox ItemsSource="{Binding Competitions}" SelectedItem="{Binding Athlete.Competition}" Grid.Row="0" Grid.Column="1" />
 
-        <!-- Поле выбора Соревнования -->
-        <TextBlock Text="Соревнование" Grid.Row="0" Grid.Column="0" />
-        <ComboBox ItemsSource="{Binding Competitions}" SelectedItem="{Binding Athlete.Competition}" Grid.Row="0" Grid.Column="1" />
+		<!-- Поле выбора Пола -->
+		<TextBlock Text="Пол" Grid.Row="1" Grid.Column="0" />
+		<ComboBox ItemsSource="{Binding Genders}" SelectedItem="{Binding Athlete.Gender}" Grid.Row="1" Grid.Column="1" />
 
-        <!-- Поле выбора Пола -->
-        <TextBlock Text="Пол" Grid.Row="1" Grid.Column="0" />
-        <ComboBox ItemsSource="{Binding Genders}" SelectedItem="{Binding Athlete.Gender}" Grid.Row="1" Grid.Column="1" />
+		<!-- Поле выбора Дисциплины -->
+		<TextBlock Text="Дисциплина" Grid.Row="2" Grid.Column="0" />
+		<ComboBox ItemsSource="{Binding Disciplines}" SelectedItem="{Binding Athlete.Discipline}" Grid.Row="2" Grid.Column="1" />
 
-        <!-- Поле выбора Дисциплины -->
-        <TextBlock Text="Дисциплина" Grid.Row="2" Grid.Column="0" />
-        <ComboBox ItemsSource="{Binding Disciplines}" SelectedItem="{Binding Athlete.Discipline}" Grid.Row="2" Grid.Column="1" />
+		<!-- Поле ввода Возраста -->
+		<TextBlock Text="Возраст" Grid.Row="3" Grid.Column="0" />
+		<TextBox Text="{Binding Athlete.Age, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="1" />
 
-        <!-- Поле ввода Возраста -->
-        <TextBlock Text="Возраст" Grid.Row="3" Grid.Column="0" />
-        <TextBox Text="{Binding Athlete.Age, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="1" />
+		<!-- Поле ввода Занятого места -->
+		<TextBlock Text="Занятое место" Grid.Row="4" Grid.Column="0" />
+		<TextBox Text="{Binding Athlete.Place, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.Column="1" />
 
-        <!-- Поле ввода Занятого места -->
-        <TextBlock Text="Занятое место" Grid.Row="4" Grid.Column="0" />
-        <TextBox Text="{Binding Athlete.Place, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.Column="1" />
+		<!-- Поле ввода Времени на дистанции -->
+		<TextBlock Text="Время на дистанции" Grid.Row="5" Grid.Column="0" />
+		<TextBox Text="{Binding Athlete.Time, Converter={StaticResource TimeSpanConverter}, UpdateSourceTrigger=PropertyChanged}" Grid.Row="5" Grid.Column="1" />
 
-        <!-- Поле ввода Времени на дистанции -->
-        <TextBlock Text="Время на дистанции" Grid.Row="5" Grid.Column="0" />
-        <TextBox Text="{Binding Athlete.Time, Converter={StaticResource TimeSpanConverter}, UpdateSourceTrigger=PropertyChanged}" Grid.Row="5" Grid.Column="1" />
+		<!-- Поле ввода Времени отставания -->
+		<TextBlock Text="Время отставания" Grid.Row="6" Grid.Column="0" />
+		<TextBox Text="{Binding Athlete.TimeDifference, Converter={StaticResource TimeSpanConverter}, UpdateSourceTrigger=PropertyChanged}" Grid.Row="6" Grid.Column="1" />
 
-        <!-- Поле ввода Времени отставания -->
-        <TextBlock Text="Время отставания" Grid.Row="6" Grid.Column="0" />
-        <TextBox Text="{Binding Athlete.TimeDifference, Converter={StaticResource TimeSpanConverter}, UpdateSourceTrigger=PropertyChanged}" Grid.Row="6" Grid.Column="1" />
+		<!-- Кнопка Проверить звание -->
+		<Button Content="Проверить звание" Command="{Binding CheckRankCommand}" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" />
 
-        <!-- Кнопка Проверить звание -->
-        <Button Content="Проверить звание" Command="{Binding CheckRankCommand}" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" />
-
-        <!-- Результат -->
-        <TextBlock Text="{Binding Result}" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" TextAlignment="Center" FontWeight="Bold" FontSize="16" Foreground="#3B82F6" />
-    </Grid>
+		<!-- Результат -->
+		<TextBlock Text="{Binding Result}" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" TextAlignment="Center" FontWeight="Bold" FontSize="16" Foreground="#3B82F6" />
+	</Grid>
 </Window>
